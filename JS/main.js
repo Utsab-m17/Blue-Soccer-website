@@ -17,24 +17,27 @@ xhr.onload = function () {
         let articles = json.articles;
         // console.log(articles);
         let newsHtml = "";
-        articles.forEach(function (element,index) {
+        articles.forEach(function (element, index) {
             let news = `
-<div class="card">
-    <div class="card-header" id="heading${index}">
-        <h2 class="mb-0">
-        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse${index}"
-            aria-expanded="true" aria-controls="#collapse${index}">
-            ${element["title"]}
-        </button>
-        </h2>
-    </div>
-
-    <div id="collapse${index}" class="collapse" aria-labelledby="heading${index}" data-parent="#newsAccordion">
-        <div class="card-body">
-        ${element["content"]}.<a href="${element["url"]}" target="_blank">Read more here</a>
+            <div class="mx-2 my-3 card">
+            <img src="${element["urlToImage"]}" class="img-fluid mr-3 mx-3 my-3" alt="Responsive image">
+    <div class="media-body">
+        <div class="card-header" id="heading${index}">
+            <h1 class="mb-0 cardTxt">
+                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse${index}"
+                aria-expanded="true" aria-controls="#collapse${index}">
+                  <p> ${element["title"]} </p>
+                </button>
+            </h1>
+        </div>
+        <div id="collapse${index}" class="collapse" aria-labelledby="heading${index}" data-parent="#newsAccordion">
+            <div class="card-body">
+                ${element["content"]}.<a href="${element["url"]}" target="_blank">Read more here</a>
+            </div>
         </div>
     </div>
-</div> `;
+</div>
+ `;
             newsHtml += news;
         });
         newsAccordion.innerHTML = newsHtml;
@@ -47,6 +50,28 @@ xhr.send();
 
 
 
+//<img src=${element["urlToImage"]} class="mr-3 mx-3 my-3" alt="..."></img> 
+
+
+
+
+//----------- for Searching option---------------
+
+let search = document.getElementById('searchTxt');
+search.addEventListener("input", function () {
+
+    let inputValue = search.value;
+    console.log('Input event fired!', inputValue);
+    let cards = document.getElementsByClassName('card');
+    Array.from(cards).forEach(function (element) {
+        let cardTxt = element.getElementsByTagName("p")[0].innerText;
+        if(cardTxt.includes(inputValue)){
+            element.style.display = "block";
+        }else{
+            element.style.display = "none";
+        }
+    })
+})
 
 
 
